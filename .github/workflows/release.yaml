@@ -1,8 +1,9 @@
 name: Build release
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - 'v**'
 
 jobs:
   oauth2-proxy-config-downloader:
@@ -10,7 +11,7 @@ jobs:
 
     permissions:
       id-token: write
-      contents: read
+      contents: write
       checks: write
       issues: read
       pull-requests: write
@@ -28,16 +29,15 @@ jobs:
           GOOS: linux
           GOARCH: arm64
       - run: gzip oauth2-proxy-config-downloader.aarch64
-      - uses: actions/upload-artifact@v3
-        with:
-          name: oauth2-proxy-config-downloader.aarch64.gz
-          path: oauth2-proxy-config-downloader.aarch64.gz
       - run: go build -o oauth2-proxy-config-downloader.amd64
         env:
           GOOS: linux
           GOARCH: amd64
       - run: gzip oauth2-proxy-config-downloader.amd64
-      - uses: actions/upload-artifact@v3
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: oauth2-proxy-config-downloader.amd64.gz
-          path: oauth2-proxy-config-downloader.amd64.gz
+          files: |
+            oauth2-proxy-config-downloader.aarch64.gz
+            oauth2-proxy-config-downloader.amd64.gz
