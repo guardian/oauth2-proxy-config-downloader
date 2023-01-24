@@ -1,4 +1,4 @@
-name: Test branches and PRs
+name: Build release
 
 on:
   release:
@@ -28,7 +28,7 @@ jobs:
           GOOS: linux
           GOARCH: arm64
       - run: gzip oauth2-proxy-config-downloader.aarch64
-      - uses: action/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: oauth2-proxy-config-downloader.aarch64.gz
           path: oauth2-proxy-config-downloader.aarch64.gz
@@ -37,7 +37,7 @@ jobs:
           GOOS: linux
           GOARCH: amd64
       - run: gzip oauth2-proxy-config-downloader.amd64
-      - uses: action/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
         with:
           name: oauth2-proxy-config-downloader.amd64.gz
           path: oauth2-proxy-config-downloader.amd64.gz
