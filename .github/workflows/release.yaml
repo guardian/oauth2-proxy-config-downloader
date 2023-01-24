@@ -1,0 +1,43 @@
+name: Test branches and PRs
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  oauth2-proxy-config-downloader:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      issues: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '^1.18.0'
+
+      - run: go test ./...
+      - run: go build -o oauth2-proxy-config-downloader.aarch64
+        env:
+          GOOS: linux
+          GOARCH: arm64
+      - run: gzip oauth2-proxy-config-downloader.aarch64
+      - uses: action/upload-artifact@v3
+        with:
+          name: oauth2-proxy-config-downloader.aarch64.gz
+          path: oauth2-proxy-config-downloader.aarch64.gz
+      - run: go build -o oauth2-proxy-config-downloader.amd64
+        env:
+          GOOS: linux
+          GOARCH: amd64
+      - run: gzip oauth2-proxy-config-downloader.amd64
+      - uses: action/upload-artifact@v3
+        with:
+          name: oauth2-proxy-config-downloader.amd64.gz
+          path: oauth2-proxy-config-downloader.amd64.gz
