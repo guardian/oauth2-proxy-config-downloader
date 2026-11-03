@@ -76,7 +76,7 @@ func NewOAuth2ProxyConfig(googleServiceAccountJson *GoogleAuthSecretJson, google
 		CookieName:               cookieName,
 		HttpAddress:              "0.0.0.0:4180",
 		RedirectUri:              fmt.Sprintf("https://%s/oauth2/callback", domainName),
-		SkipAuthRegex:            "/healthcheck/_",
+		SkipAuthRegex:            "^/healthcheck/_$",
 		Upstreams:                append([]string{"file:///var/www/healthcheck/#/healthcheck/"}, upstreamUriList...),
 	}
 }
