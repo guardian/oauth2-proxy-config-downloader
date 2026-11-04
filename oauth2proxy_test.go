@@ -12,7 +12,7 @@ func TestOauth2ProxyGenerate(t *testing.T) {
 #################################
 OPTS="      --upstream=http://localhost:9000 \
       --upstream=file:///var/www/healthcheck/#/healthcheck/ \
-      --skip-auth-regex=/healthcheck/_ \
+      --skip-auth-regex=^/healthcheck/_$ \
       --redirect-url=https://app.my-domain.co.uk/oauth2/callback \
       --http-address=0.0.0.0:4180 \
       --google-service-account-json=/tmp/auth.json \
